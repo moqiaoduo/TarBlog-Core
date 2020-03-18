@@ -1,0 +1,27 @@
+{
+    "name": "moqiaoduo/tarblog-core",
+    "type": "library",
+    "require": {
+        "illuminate/database": "^5.5",
+        "illuminate/pagination": "^5.5"
+    },
+    "require-dev": {
+        "filp/whoops": "^2.7",
+        "symfony/var-dumper": "^3.4",
+        "phpunit/phpunit": "^7.5"
+    },
+    "license": "Apache License 2.0",
+    "authors": [
+        {
+            "name": "moqiaoduo",
+            "email": "415372363@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "description": "TarBlog核心框架",
+    "autoload": {
+        "psr-4": {
+            "TarBlog\\": "src/"
+        }
+    }
+}
