@@ -14,7 +14,6 @@ use TarBlog\Foundation\Console\EventClearCommand;
 use TarBlog\Foundation\Console\EventGenerateCommand;
 use TarBlog\Foundation\Console\EventListCommand;
 use TarBlog\Foundation\Console\EventMakeCommand;
-use TarBlog\Foundation\Console\JobMakeCommand;
 use TarBlog\Foundation\Console\KeyGenerateCommand;
 use TarBlog\Foundation\Console\ListenerMakeCommand;
 use TarBlog\Foundation\Console\ModelMakeCommand;
@@ -24,7 +23,6 @@ use TarBlog\Foundation\Console\OptimizeCommand;
 use TarBlog\Foundation\Console\RouteCacheCommand;
 use TarBlog\Foundation\Console\RouteClearCommand;
 use TarBlog\Foundation\Console\RuleMakeCommand;
-use TarBlog\Foundation\Console\VendorPublishCommand;
 use Illuminate\Session\Console\SessionTableCommand;
 use Illuminate\Support\ServiceProvider;
 
@@ -59,14 +57,12 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'EventGenerate' => 'command.event.generate',
         'EventMake' => 'command.event.make',
         'FactoryMake' => 'command.factory.make',
-        'JobMake' => 'command.job.make',
         'ListenerMake' => 'command.listener.make',
         'ModelMake' => 'command.model.make',
         'ObserverMake' => 'command.observer.make',
         'RuleMake' => 'command.rule.make',
         'SeederMake' => 'command.seeder.make',
         'SessionTable' => 'command.session.table',
-        'VendorPublish' => 'command.vendor.publish',
     ];
 
     /**
@@ -201,18 +197,6 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton('command.event.list', function () {
             return new EventListCommand();
-        });
-    }
-
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerJobMakeCommand()
-    {
-        $this->app->singleton('command.job.make', function ($app) {
-            return new JobMakeCommand($app['files']);
         });
     }
 
@@ -360,17 +344,6 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerVendorPublishCommand()
-    {
-        $this->app->singleton('command.vendor.publish', function ($app) {
-            return new VendorPublishCommand($app['files']);
-        });
-    }
     /**
      * Get the services provided by the provider.
      *
