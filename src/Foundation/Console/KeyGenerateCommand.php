@@ -124,21 +124,9 @@ class KeyGenerateCommand extends Command
 
         $configs['app']['key'] = $key;
 
-        $this->files->put($config_file, $this->buildConfigFile($configs));
-    }
-
-    /**
-     * Build the config file.
-     *
-     * @param  array $configs
-     * @return string
-     *
-     * @throws
-     */
-    protected function buildConfigFile($configs)
-    {
-        $stub = $this->files->get(__DIR__.'/stubs/config.stub');
-
-        return str_replace('{{configs}}', var_export($configs,true), $stub);
+        $this->files->put(
+            $config_file,
+            '<?php return '.var_export($configs, true).';'.PHP_EOL
+        );
     }
 }
