@@ -325,10 +325,13 @@ class Route
      * 设置路由名称
      *
      * @param $name
+     * @return Route
      */
     public function name($name)
     {
         $this->name=$this->addGroupName($name);
+
+        return $this;
     }
 
     protected function addGroupName($name)

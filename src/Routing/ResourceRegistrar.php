@@ -178,9 +178,13 @@ class ResourceRegistrar
     {
         $uri = $this->getResourceUri($name);
 
-        $action = $this->getResourceAction($name, $controller, 'index', $options);
+        $method = 'index';
 
-        return $this->router->get($uri, $action);
+        $action = $controller.'@'.$method;
+
+        $name = $this->getResourceRouteName($name, $method, $options);
+
+        return $this->router->get($uri, $action)->name($name)->middleware($options['middleware'] ?? []);
     }
 
     /**
@@ -196,9 +200,13 @@ class ResourceRegistrar
     {
         $uri = $this->getResourceUri($name).'/'.static::$verbs['create'];
 
-        $action = $this->getResourceAction($name, $controller, 'create', $options);
+        $method = 'create';
 
-        return $this->router->get($uri, $action);
+        $action = $controller.'@'.$method;
+
+        $name = $this->getResourceRouteName($name, $method, $options);
+
+        return $this->router->get($uri, $action)->name($name)->middleware($options['middleware'] ?? []);
     }
 
     /**
@@ -214,9 +222,13 @@ class ResourceRegistrar
     {
         $uri = $this->getResourceUri($name);
 
-        $action = $this->getResourceAction($name, $controller, 'store', $options);
+        $method = 'store';
 
-        return $this->router->post($uri, $action);
+        $action = $controller.'@'.$method;
+
+        $name = $this->getResourceRouteName($name, $method, $options);
+
+        return $this->router->get($uri, $action)->name($name)->middleware($options['middleware'] ?? []);
     }
 
     /**
@@ -234,9 +246,13 @@ class ResourceRegistrar
 
         $uri = $this->getResourceUri($name).'/{'.$base.'}';
 
-        $action = $this->getResourceAction($name, $controller, 'show', $options);
+        $method = 'show';
 
-        return $this->router->get($uri, $action);
+        $action = $controller.'@'.$method;
+
+        $name = $this->getResourceRouteName($name, $method, $options);
+
+        return $this->router->get($uri, $action)->name($name)->middleware($options['middleware'] ?? []);
     }
 
     /**
@@ -254,9 +270,13 @@ class ResourceRegistrar
 
         $uri = $this->getResourceUri($name).'/{'.$base.'}/'.static::$verbs['edit'];
 
-        $action = $this->getResourceAction($name, $controller, 'edit', $options);
+        $method = 'edit';
 
-        return $this->router->get($uri, $action);
+        $action = $controller.'@'.$method;
+
+        $name = $this->getResourceRouteName($name, $method, $options);
+
+        return $this->router->get($uri, $action)->name($name)->middleware($options['middleware'] ?? []);
     }
 
     /**
@@ -274,9 +294,13 @@ class ResourceRegistrar
 
         $uri = $this->getResourceUri($name).'/{'.$base.'}';
 
-        $action = $this->getResourceAction($name, $controller, 'update', $options);
+        $method = 'update';
 
-        return $this->router->match(['PUT', 'PATCH'], $uri, $action);
+        $action = $controller.'@'.$method;
+
+        $name = $this->getResourceRouteName($name, $method, $options);
+
+        return $this->router->get($uri, $action)->name($name)->middleware($options['middleware'] ?? []);
     }
 
     /**
@@ -294,9 +318,13 @@ class ResourceRegistrar
 
         $uri = $this->getResourceUri($name).'/{'.$base.'}';
 
-        $action = $this->getResourceAction($name, $controller, 'destroy', $options);
+        $method = 'destroy';
 
-        return $this->router->delete($uri, $action);
+        $action = $controller.'@'.$method;
+
+        $name = $this->getResourceRouteName($name, $method, $options);
+
+        return $this->router->get($uri, $action)->name($name)->middleware($options['middleware'] ?? []);
     }
 
     /**
@@ -368,28 +396,6 @@ class ResourceRegistrar
         }
 
         return str_replace('-', '_', $value);
-    }
-
-    /**
-     * Get the action array for a resource route.
-     *
-     * @param  string  $resource
-     * @param  string  $controller
-     * @param  string  $method
-     * @param  array  $options
-     * @return array
-     */
-    protected function getResourceAction($resource, $controller, $method, $options)
-    {
-        $name = $this->getResourceRouteName($resource, $method, $options);
-
-        $action = ['as' => $name, 'uses' => $controller.'@'.$method];
-
-        if (isset($options['middleware'])) {
-            $action['middleware'] = $options['middleware'];
-        }
-
-        return $action;
     }
 
     /**
