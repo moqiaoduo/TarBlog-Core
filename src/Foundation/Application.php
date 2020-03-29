@@ -426,7 +426,7 @@ class Application extends Container implements ApplicationContract
      */
     public function isDownForMaintenance()
     {
-        return Config::get("maintaining",false);
+        return false;
     }
 
     /**
