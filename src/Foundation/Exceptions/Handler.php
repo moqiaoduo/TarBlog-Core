@@ -421,7 +421,7 @@ class Handler implements ExceptionHandlerContract
 
         View::replaceNamespace('errors', $paths->map(function ($path) {
             return "{$path}/errors";
-        })->push(__DIR__.'/views')->all());
+        })->push(__DIR__ . DIRECTORY_SEPARATOR . 'views')->all());
     }
 
     /**
