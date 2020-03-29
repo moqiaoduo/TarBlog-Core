@@ -74,18 +74,27 @@ class Factory implements FactoryContract
     {
         $data = array_merge($mergeData , $this->shares, $this->parseData($data));
 
+        $theme = $this->shares['app']->resourcePath($this->theme);
+
+        $viewToPath = str_replace(".","/",$view); // view的点表示路径分隔，虽然很少用到但还是支持一下吧
+
         if (($pos = strpos($view,"::")) !== false &&
             array_key_exists(($namespace = substr($view,0,$pos)),$this->namespace)) {
             $path = $this->namespace[$namespace];
-            $file = str_replace('.',DIRECTORY_SEPARATOR,substr($view,$pos+2));
-            $theme = $this->findViewFileOfDir($path,$file,$view);
-            $file = $theme.$file;
+
+            $file = str_replace('.',DIRECTORY_SEPARATOR , substr($viewToPath,$pos+2)) . '.php';
+
+            // 假如命名空间是errors，则优先读取主题中的错误页面设置
+            if ($namespace != 'errors' || ! file_exists($file = $theme . DIRECTORY_SEPARATOR . $file)) {
+                $theme = $this->findViewFileOfDir($path,$file,$view);
+
+                $file = $theme . $file;
+            }
         } else {
-            $theme = $this->shares['app']->resourcePath($this->theme);
-            $file = $theme.DIRECTORY_SEPARATOR.$view;
+            $file = $theme . DIRECTORY_SEPARATOR . $viewToPath . '.php';
         }
 
-        $view = new View($file.'.php', $view, $data);
+        $view = new View($file, $view, $data);
 
         $view->setThemeDir($theme);
 
@@ -106,7 +115,7 @@ class Factory implements FactoryContract
         foreach ($dirs as $dir) {
             $dir = substr($dir,-1)===DIRECTORY_SEPARATOR ? $dir : $dir.DIRECTORY_SEPARATOR;
 
-            if (file_exists($dir.$file.'.php'))
+            if (file_exists($dir.$file))
                 return $dir;
         }
 
