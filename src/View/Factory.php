@@ -57,24 +57,26 @@ class Factory implements FactoryContract
      */
     public function exists($view)
     {
+        $file = $this->file($view,null,true);
+
+        if ($file === false || ! file_exists($file[1])) return false;
+
         return true;
     }
 
     /**
-     * @inheritDoc
-     */
-    public function file($path, $data = [], $mergeData = [])
-    {}
-
-    /**
-     * @inheritDoc
+     * 这个函数我定义为获取文件路径
+     * [0]为目录, [1]为完整路径
+     *
+     * @param string $view
+     * @param string $path
+     * @param bool $notThrow
+     * @return array|boolean
      * @throws ViewNotFoundException
      */
-    public function make($view, $data = [], $mergeData = [])
+    public function file($view, $path = null, $notThrow = false)
     {
-        $data = array_merge($mergeData , $this->shares, $this->parseData($data));
-
-        $theme = $this->shares['app']->resourcePath($this->theme);
+        $theme = $path ?: $this->shares['app']->resourcePath($this->theme);
 
         $viewToPath = str_replace(".","/",$view); // view的点表示路径分隔，虽然很少用到但还是支持一下吧
 
@@ -86,7 +88,14 @@ class Factory implements FactoryContract
 
             // 假如命名空间是errors，则优先读取主题中的错误页面设置
             if ($namespace != 'errors' || ! file_exists($filePath = $theme . DIRECTORY_SEPARATOR . $file)) {
-                $theme = $this->findViewFileOfDir($path,$file,$view);
+                try {
+                    $theme = $this->findViewFileOfDir($path,$file,$view);
+                } catch (ViewNotFoundException $e) {
+                    if ($notThrow)
+                        return false;
+                    else
+                        throw $e;
+                }
 
                 $filePath = $theme . $file;
             }
@@ -94,9 +103,20 @@ class Factory implements FactoryContract
             $filePath = $theme . DIRECTORY_SEPARATOR . $viewToPath . '.php';
         }
 
+        return [$theme, $filePath];
+    }
+
+    /**
+     * @inheritDoc
+     * @throws ViewNotFoundException
+     */
+    public function make($view, $data = [], $mergeData = [])
+    {
+        [$themeDir, $filePath] = $this->file($view);
+
         $view = new View($filePath, $view, $data);
 
-        $view->setThemeDir($theme);
+        $view->setThemeDir($themeDir);
 
         return $view;
     }
