@@ -13,7 +13,6 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\Response;
@@ -755,11 +754,7 @@ if (! function_exists('getOption')) {
     function getOption($key, $default = null, $user = 0)
     {
         if ($user > 0) {
-            $data = DB::table('options')->where('name',$key)->where('user',$user)->first();
-
-            if ($data == null) return $default;
-
-            return $data->value;
+            app('options')->user($key, $user, $default);
         } else {
             return config($key, $default);
         }
@@ -776,6 +771,6 @@ if (! function_exists('setOption')) {
      */
     function setOption($key, $value, $user = 0)
     {
-        DB::table('options')->updateOrInsert(['name'=>$key,'user'=>$user],['value'=>$value]);
+        app('options')->writeToDB($key, $value, $user);
     }
 }
