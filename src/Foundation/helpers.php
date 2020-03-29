@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\Response;
@@ -131,15 +132,21 @@ if (! function_exists('app_path')) {
 
 if (! function_exists('asset')) {
     /**
-     * Generate an asset path for the application.
+     * Generate and show an asset path for the application.
      *
-     * @param  string  $path
-     * @param  bool|null  $secure
+     * @param string $path
+     * @param bool|null $secure
+     * @param bool $show
      * @return string
      */
-    function asset($path, $secure = null)
+    function asset($path, $secure = null, $show = true)
     {
-        return app('url')->asset($path, $secure);
+        $path = app('url')->asset($path, $secure);
+
+        if ($show)
+            echo $path;
+
+        return $path;
     }
 }
 
@@ -732,5 +739,43 @@ if (! function_exists('view')) {
         }
 
         return $factory->make($view, $data, $mergeData);
+    }
+}
+
+if (! function_exists('getOption')) {
+    /**
+     * 读取option
+     * user=0时，通过config读取预读数据
+     *
+     * @param $key
+     * @param null $default
+     * @param int $user
+     * @return mixed|null
+     */
+    function getOption($key, $default = null, $user = 0)
+    {
+        if ($user > 0) {
+            $data = DB::table('options')->where('name',$key)->where('user',$user)->first();
+
+            if ($data == null) return $default;
+
+            return $data->value;
+        } else {
+            return config($key, $default);
+        }
+    }
+}
+
+if (! function_exists('setOption')) {
+    /**
+     * 写入option
+     *
+     * @param $key
+     * @param $value
+     * @param int $user
+     */
+    function setOption($key, $value, $user = 0)
+    {
+        DB::table('options')->updateOrInsert(['name'=>$key,'user'=>$user],['value'=>$value]);
     }
 }
