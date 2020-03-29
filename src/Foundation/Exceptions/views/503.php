@@ -1,5 +1,6 @@
-@extends('errors::minimal')
+<?php
+$this->title = 'Service Unavailable';
+$this->code = 500;
+$this->message = $this->exception->getMessage() ?: 'Service Unavailable';
 
-@section('title', __('Service Unavailable'))
-@section('code', '503')
-@section('message', __($exception->getMessage() ?: 'Service Unavailable'))
+$this->need('error');

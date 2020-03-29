@@ -1,5 +1,6 @@
-@extends('errors::minimal')
+<?php
+$this->title = 'Server Error';
+$this->code = 500;
+$this->message = 'Server Error';
 
-@section('title', __('Server Error'))
-@section('code', '500')
-@section('message', __('Server Error'))
+$this->need('error');

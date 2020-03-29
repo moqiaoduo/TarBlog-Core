@@ -1,5 +1,6 @@
-@extends('errors::minimal')
+<?php
+$this->title = 'Forbidden';
+$this->code = 403;
+$this->message = $this->exception->getMessage() ?: 'Forbidden';
 
-@section('title', __('Forbidden'))
-@section('code', '403')
-@section('message', __($exception->getMessage() ?: 'Forbidden'))
+$this->need('error');

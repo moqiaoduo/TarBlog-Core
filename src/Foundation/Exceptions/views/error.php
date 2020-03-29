@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?php echo $title ?? '' ?></title>
+    <title><?php echo $this->title ?></title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -51,11 +51,11 @@
 <body>
 <div class="flex-center position-ref full-height">
     <div class="code">
-        <?php echo $code ?? '' ?>
+        <?php echo $this->code ?>
     </div>
 
     <div class="message" style="padding: 10px;">
-        <?php echo $message ?? '' ?>
+        <?php echo $this->message ?>
     </div>
 </div>
 </body>

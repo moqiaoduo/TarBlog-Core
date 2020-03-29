@@ -1,5 +1,6 @@
-@extends('errors::minimal')
+<?php
+$this->title = 'Page Expired';
+$this->code = 419;
+$this->message = 'Page Expired';
 
-@section('title', __('Page Expired'))
-@section('code', '419')
-@section('message', __('Page Expired'))
+$this->need('error');

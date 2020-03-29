@@ -1,5 +1,6 @@
-@extends('errors::minimal')
+<?php
+$this->title = 'Too Many Requests';
+$this->code = 429;
+$this->message = 'Too Many Requests';
 
-@section('title', __('Too Many Requests'))
-@section('code', '429')
-@section('message', __('Too Many Requests'))
+$this->need('error');

@@ -1,7 +1,6 @@
-@extends('errors::minimal')
-
-@section('title', __('Unauthorized'))
-@section('code', '401')
-@section('message', __('Unauthorized'))
-
 <?php
+$this->title = 'Unauthorized';
+$this->code = 401;
+$this->message = 'Unauthorized';
+
+$this->need('error');

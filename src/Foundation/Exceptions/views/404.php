@@ -1,9 +1,6 @@
 <?php
-/**
- * @var $this \TarBlog\View\Engine
- */
-$title = 'Not Found';
-$code = 404;
-$message = 'Not Found';
+$this->title = 'Not Found';
+$this->code = 404;
+$this->message = 'Not Found';
 
-$this->need('error',compact('title','code','message'));
+$this->need('error');
