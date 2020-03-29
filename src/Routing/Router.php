@@ -508,7 +508,7 @@ class Router implements RegistrarContract
     public function dispatchToRoute(Request $request)
     {
         $notMatchMethod = [];
-        $methodNotMatchUri = null;dd($this->routes);
+        $methodNotMatchUri = null;
         foreach ($this->routes->getRoutes() as $route) {
             if ($route->uriMatch($request->path())) {
                 if ($route->isMethod($request->method())) {
