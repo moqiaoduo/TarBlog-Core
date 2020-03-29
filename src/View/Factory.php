@@ -85,16 +85,16 @@ class Factory implements FactoryContract
             $file = str_replace('.',DIRECTORY_SEPARATOR , substr($viewToPath,$pos+2)) . '.php';
 
             // 假如命名空间是errors，则优先读取主题中的错误页面设置
-            if ($namespace != 'errors' || ! file_exists($file = $theme . DIRECTORY_SEPARATOR . $file)) {
+            if ($namespace != 'errors' || ! file_exists($filePath = $theme . DIRECTORY_SEPARATOR . $file)) {
                 $theme = $this->findViewFileOfDir($path,$file,$view);
 
-                $file = $theme . $file;
+                $filePath = $theme . $file;
             }
         } else {
-            $file = $theme . DIRECTORY_SEPARATOR . $viewToPath . '.php';
+            $filePath = $theme . DIRECTORY_SEPARATOR . $viewToPath . '.php';
         }
 
-        $view = new View($file, $view, $data);
+        $view = new View($filePath, $view, $data);
 
         $view->setThemeDir($theme);
 
