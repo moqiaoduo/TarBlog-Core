@@ -220,7 +220,7 @@ class Route
         $pattern = $this->getPattern($in_uri,$params) ?: '/'; // 为了匹配 /
 
         // 匹配uri并获取参数
-        preg_match("`^$pattern`",$out_uri,$matches);
+        preg_match("`^$pattern$`",$out_uri,$matches);
 
         // 未匹配到时，返回false
         if (count($matches) == 0) return false;
