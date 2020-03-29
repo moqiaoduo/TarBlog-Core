@@ -3,6 +3,7 @@
 namespace TarBlog\Routing;
 
 use Illuminate\Container\Container;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -463,9 +464,7 @@ class Route
 
         $reflect = new \ReflectionFunction($action);
 
-        if ($reflect->getNumberOfParameters() > 0 && $reflect->getParameters()[0]->getType() == Request::class) {
-            $params[] = $this->container->make('request');
-        }
+        $params = $this->bindParamAndMerge($reflect, array_values($this->parameters));
 
         $params = array_merge($params, array_values($this->parameters));
 
@@ -500,12 +499,7 @@ class Route
             $methodReflect = $reflect->getMethod($method);
         }
 
-        if ($methodReflect->getNumberOfParameters() > 0 &&
-            $methodReflect->getParameters()[0]->getType() == Request::class) {
-            $params[] = $this->container->make('request');
-        }
-
-        $params = array_merge($params, array_values($this->parameters));
+        $params = $this->bindParamAndMerge($methodReflect, array_values($this->parameters));
 
         if ($method === null)
             return $action(...$params);
@@ -514,14 +508,20 @@ class Route
     }
 
     /**
+     * 绑定控制器参数
+     *
      * @param \ReflectionMethod|\ReflectionFunction $reflect
      * @param array $normalParam
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws
      */
     protected function bindParamAndMerge($reflect, $normalParam = [])
     {
         $params = [];
+
+        $defaultParams = array_values($this->parameters);
+
+        $paramOffset = 0;
 
         foreach ($reflect->getParameters() as $parameter) {
             if (! $parameter->hasType()) break; // 按照规定，所有特殊参数应放在最前面，且普通参数不得带类型
@@ -530,12 +530,24 @@ class Route
 
             if ($type == Request::class) {
                 $params[] = $this->container->make('request');
-            } else {
-
+            } elseif ($type == RouteParams::class) {
+                $params[] = new RouteParams($this->parameters);
+            } elseif (class_exists($type)) {
+                $class = (string) $type;
+                $reflectClass = new \ReflectionClass($class);
+                if ($reflectClass->isInstantiable() && $reflectClass->isSubclassOf(Model::class)) {
+                    $index = $parameter->getPosition() - $paramOffset;
+                    if (! isset($defaultParams[$index])) continue;
+                    $id = $defaultParams[$index]; // 不知道这样会不会浪费性能，先这样写
+                    unset($defaultParams[$index]);
+                    $model = $class::findOrFail($id);
+                    $params[] = $model;
+                    $paramOffset++;
+                }
             }
         }
 
-        return array_merge($params, array_values($this->parameters));
+        return array_merge($params, $defaultParams);
     }
 
     public function __sleep()
