@@ -97,6 +97,7 @@ class HandleExceptions
         if ($this->app->runningInConsole()) {
             $this->renderForConsole($e);
         } else {
+            ob_clean(); // 防止内容污染
             $this->renderHttpResponse($e);
         }
     }
