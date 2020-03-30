@@ -81,7 +81,7 @@ class RouteCollection implements Countable, IteratorAggregate
      * 通过名称获取路由
      *
      * @param $name
-     * @return mixed|null
+     * @return Route|null
      */
     public function getByName($name)
     {
