@@ -1,6 +1,6 @@
 <?php
 
-namespace TarBlog\Facades;
+namespace TarBlog\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

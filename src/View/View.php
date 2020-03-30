@@ -124,11 +124,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      */
     public function addMacro($name, $macro = null)
     {
-        if (is_null($macro)) {
-            Engine::mixin($name);
-        }
-
-        Engine::macro($name, $macro);
+        \TarBlog\Support\Facades\View::addMacro($name, $macro);
 
         return $this;
     }
