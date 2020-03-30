@@ -141,7 +141,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      */
     public function title($title)
     {
-        $this->engine->setTitle($title);
+        $this->engine->setArchiveTitle($title);
 
         return $this;
     }
@@ -155,6 +155,19 @@ class View implements ArrayAccess, Htmlable, ViewContract
     public function type($type)
     {
         $this->engine->setType($type);
+
+        return $this;
+    }
+
+    /**
+     * 设置队列
+     *
+     * @param $queue
+     * @return $this
+     */
+    public function queue($queue)
+    {
+        $this->engine->setQueue($queue);
 
         return $this;
     }

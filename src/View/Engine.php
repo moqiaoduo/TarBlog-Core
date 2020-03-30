@@ -29,11 +29,25 @@ class Engine
     protected $view;
 
     /**
+     * 队列
+     *
+     * @var array
+     */
+    private $queue = [];
+
+    /**
+     * 当前出队的数据
+     *
+     * @var mixed
+     */
+    private $row;
+
+    /**
      * 标题
      *
      * @var string
      */
-    private $title = NULL;
+    private $archiveTitle = NULL;
 
     /**
      * 类型
@@ -42,8 +56,9 @@ class Engine
      */
     private $type = 'index';
 
-
     /**
+     * options表内容
+     *
      * @var Options
      */
     private $options;
@@ -107,32 +122,32 @@ class Engine
      * @param string $before
      * @param string $end
      */
-    public function title($defines = NULL, $before = ' &raquo; ', $end = '')
+    public function archiveTitle($defines = NULL, $before = ' &raquo; ', $end = '')
     {
-        if ($this->title) {
+        if ($this->archiveTitle) {
             $define = '%s';
             if (is_array($defines) && !empty($defines[$this->type])) {
                 $define = $defines[$this->type];
             }
 
-            echo $before . sprintf($define, $this->title) . $end;
+            echo $before . sprintf($define, $this->archiveTitle) . $end;
         }
     }
 
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getArchiveTitle(): string
     {
-        return $this->title;
+        return $this->archiveTitle;
     }
 
     /**
      * @param string $title
      */
-    public function setTitle(string $title): void
+    public function setArchiveTitle(string $title): void
     {
-        $this->title = $title;
+        $this->archiveTitle = $title;
     }
 
     /**
@@ -160,6 +175,22 @@ class Engine
     public function is($type)
     {
         return $type === $this->type;
+    }
+
+    /**
+     * @return array
+     */
+    public function getQueue(): array
+    {
+        return $this->queue;
+    }
+
+    /**
+     * @param array $queue
+     */
+    public function setQueue(array $queue): void
+    {
+        $this->queue = $queue;
     }
 
     public function header()
@@ -281,6 +312,34 @@ EOF;
     }
 
     /**
+     * 队列是否不为空
+     *
+     * @return boolean
+     */
+    public function have()
+    {
+        return !empty($this->queue);
+    }
+
+    /**
+     * 出队
+     *
+     * @return mixed|null
+     */
+    public function next()
+    {
+        if ($this->have()) {
+            $row = array_shift($this->queue);
+        } else {
+            return null;
+        }
+
+        $this->row = $row;
+
+        return $row;
+    }
+
+    /**
      * 魔术方法，用于获取视图数据
      *
      * @param $name
@@ -314,8 +373,10 @@ EOF;
         try {
             $this->__microCall($method, $parameters);
         } catch (\BadMethodCallException $e) {
-            // 不是宏指令的话 就是视图数据辣
-            if (isset($this->view[$method]))
+            // 不是宏指令的话 就是队列数据或视图数据
+            if (isset($this->row[$method]))
+                echo $this->row[$method];
+            elseif (isset($this->view[$method]))
                 echo $this->view[$method];
         }
     }
