@@ -201,7 +201,7 @@ if (! function_exists('src_path')) {
      * @param  string  $path
      * @return string
      */
-    function base_path($path = '')
+    function src_path($path = '')
     {
         return app()->srcPath($path);
     }
