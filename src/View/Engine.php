@@ -172,7 +172,7 @@ class Engine
 <meta name="description" content="$description">
 EOF;
 
-        app('plugin')->trigger('header');
+//        app('plugin')->trigger('header');
     }
 
     protected function footer()
@@ -252,7 +252,7 @@ EOF;
 </script>
 EOF;
 
-        app('plugin')->trigger('footer');
+//        app('plugin')->trigger('footer');
     }
 
     /**
