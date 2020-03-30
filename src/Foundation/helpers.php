@@ -766,11 +766,7 @@ if (! function_exists('getOption')) {
      */
     function getOption($key, $default = null, $user = 0)
     {
-        if ($user > 0) {
-            app('options')->user($key, $user, $default);
-        } else {
-            return config($key, $default);
-        }
+        return app('options')->user($key, $user, $default);
     }
 }
 

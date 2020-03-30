@@ -57,6 +57,9 @@ class Options
 
     public function user($key, $user, $default = null)
     {
+        if ($user <= 0)
+            return array_key_exists($key, $this->data) ? $this->data[$key] : $default;
+
         if (isset($this->user_data[$user][$key]))
             return $this->user_data[$user][$key];
 
