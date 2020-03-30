@@ -24,6 +24,8 @@ trait Queue
     protected $row;
 
     /**
+     * 获取队列
+     *
      * @return array
      */
     public function getQueue(): array
@@ -32,9 +34,11 @@ trait Queue
     }
 
     /**
-     * @param array $queue
+     * 设置队列
+     *
+     * @param array|Arrayable $queue
      */
-    public function setQueue(array $queue)
+    public function setQueue($queue)
     {
         $this->queue = $queue instanceof Arrayable ? $queue->toArray() : $queue;
     }
