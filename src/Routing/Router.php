@@ -47,13 +47,6 @@ class Router implements RegistrarContract
     protected $routes;
 
     /**
-     * The currently dispatched route instance.
-     *
-     * @var \TarBlog\Routing\Route|null
-     */
-    protected $current;
-
-    /**
      * The request currently being dispatched.
      *
      * @var \Illuminate\Http\Request
@@ -110,7 +103,7 @@ class Router implements RegistrarContract
      * @var array
      */
     protected $allowedAttributes = [
-        'as', 'domain', 'middleware', 'name', 'namespace', 'prefix', 'where',
+        'as', 'middleware', 'name', 'namespace', 'prefix', 'where',
     ];
 
     /**
@@ -480,6 +473,16 @@ class Router implements RegistrarContract
         $this->middleware[$name] = $class;
 
         return $this;
+    }
+
+    /**
+     * 获取当前Request
+     *
+     * @return Request
+     */
+    public function getCurrentRequest()
+    {
+        return $this->currentRequest;
     }
 
     /**

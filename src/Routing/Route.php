@@ -460,8 +460,6 @@ class Route
      */
     protected function runAction($action)
     {
-        $params = [];
-
         $reflect = new \ReflectionFunction($action);
 
         $params = $this->bindParamAndMerge($reflect, array_values($this->parameters));
@@ -481,8 +479,6 @@ class Route
      */
     protected function runController($action, $method = null)
     {
-        $params = [];
-
         $reflect = new \ReflectionClass($action);
 
         if ($method === null) {
@@ -529,7 +525,7 @@ class Route
             $type = $parameter->getType();
 
             if ($type == Request::class) {
-                $params[] = $this->container->make('request');
+                $params[] = $this->router->getCurrentRequest();
             } elseif ($type == RouteParams::class) {
                 $params[] = new RouteParams($this->parameters);
             } elseif (class_exists($type)) {

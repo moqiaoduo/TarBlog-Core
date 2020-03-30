@@ -16,7 +16,6 @@ use InvalidArgumentException;
  * @method \TarBlog\Routing\Route options(string $uri, \Closure|array|string|null $action = null)
  * @method \TarBlog\Routing\Route any(string $uri, \Closure|array|string|null $action = null)
  * @method \TarBlog\Routing\RouteRegistrar as(string $value)
- * @method \TarBlog\Routing\RouteRegistrar domain(string $value)
  * @method \TarBlog\Routing\RouteRegistrar middleware(array|string|null $middleware)
  * @method \TarBlog\Routing\RouteRegistrar name(string $value)
  * @method \TarBlog\Routing\RouteRegistrar namespace(string $value)
@@ -54,7 +53,7 @@ class RouteRegistrar
      * @var array
      */
     protected $allowedAttributes = [
-        'as', 'domain', 'middleware', 'name', 'namespace', 'prefix', 'where',
+        'as', 'middleware', 'name', 'namespace', 'prefix', 'where',
     ];
 
     /**
