@@ -312,11 +312,12 @@ EOF;
      *
      * @param $method
      * @param $parameters
+     * @return mixed|void
      */
     public function __call($method, $parameters)
     {
         try {
-            $this->__microCall($method, $parameters);
+            return $this->__microCall($method, $parameters);
         } catch (\BadMethodCallException $e) {
             // 不是宏指令的话 就是队列数据或视图数据
             if (isset($this->row[$method]))
