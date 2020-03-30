@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \TarBlog\Routing\RouteRegistrar name(string $value)
  * @method static \TarBlog\Routing\RouteRegistrar namespace(string $value)
  * @method static \TarBlog\Routing\Router|\TarBlog\Routing\RouteRegistrar group(array|\Closure|string $attributes, \Closure|string $routes)
+ * @method static \TarBlog\Routing\RouteCollection getRoutes()
  *
  * @see \TarBlog\Routing\Router
  */
