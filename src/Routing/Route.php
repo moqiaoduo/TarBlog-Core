@@ -132,6 +132,16 @@ class Route
     }
 
     /**
+     * 获取匹配到的参数
+     *
+     * @return array
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
      * 获取路由Uri
      *
      * @return string
@@ -267,7 +277,7 @@ class Route
      *
      * @return array|mixed
      */
-    protected function getParamsFromPatternUri()
+    public function getParamsFromPatternUri()
     {
         preg_match_all('/\{(.*?)\}/',$this->uri,$matches);
         return empty($matches)?[]:$matches[1];
