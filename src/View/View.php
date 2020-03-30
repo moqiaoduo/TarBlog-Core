@@ -119,15 +119,18 @@ class View implements ArrayAccess, Htmlable, ViewContract
      *
      * @param $name
      * @param null $macro
+     * @return View
      * @throws
      */
-    public function addMicro($name, $macro = null)
+    public function addMacro($name, $macro = null)
     {
         if (is_null($macro)) {
             Engine::mixin($name);
         }
 
         Engine::macro($name, $macro);
+
+        return $this;
     }
 
     /**
