@@ -2,6 +2,8 @@
 
 namespace TarBlog\Support;
 
+use Illuminate\Contracts\Support\Arrayable;
+
 /**
  * 数据队列支持
  */
@@ -34,7 +36,7 @@ trait Queue
      */
     public function setQueue(array $queue)
     {
-        $this->queue = $queue;
+        $this->queue = $queue instanceof Arrayable ? $queue->toArray() : $queue;
     }
 
     /**
