@@ -5,6 +5,7 @@ namespace TarBlog\View;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Traits\Macroable;
 use TarBlog\Foundation\Options;
+use TarBlog\Support\Queue;
 
 /**
  * 之前的模板渲染都是直接混在View类里面的，不太安全，现在单独用一个处理类
@@ -21,26 +22,14 @@ class Engine
         __call as __microCall;
     } // 使用宏指令，方便插入外部方法/函数，供模板调用
 
+    use Queue;
+
     /**
      * 视图对象
      *
      * @var View
      */
     protected $view;
-
-    /**
-     * 队列
-     *
-     * @var array
-     */
-    private $queue = [];
-
-    /**
-     * 当前出队的数据
-     *
-     * @var mixed
-     */
-    private $row;
 
     /**
      * 标题
@@ -177,22 +166,6 @@ class Engine
         return $type === $this->type;
     }
 
-    /**
-     * @return array
-     */
-    public function getQueue(): array
-    {
-        return $this->queue;
-    }
-
-    /**
-     * @param array $queue
-     */
-    public function setQueue(array $queue): void
-    {
-        $this->queue = $queue;
-    }
-
     public function header()
     {
         $keywords = getOption('keyword');
@@ -309,34 +282,6 @@ EOF;
         } else {
             echo htmlspecialchars($value);
         }
-    }
-
-    /**
-     * 队列是否不为空
-     *
-     * @return boolean
-     */
-    public function have()
-    {
-        return !empty($this->queue);
-    }
-
-    /**
-     * 出队
-     *
-     * @return mixed|null
-     */
-    public function next()
-    {
-        if ($this->have()) {
-            $row = array_shift($this->queue);
-        } else {
-            return null;
-        }
-
-        $this->row = $row;
-
-        return $row;
     }
 
     /**
