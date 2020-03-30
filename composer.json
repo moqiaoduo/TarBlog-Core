@@ -31,6 +31,7 @@
         }
     ],
     "description": "TarBlog核心框架",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "TarBlog\\": "src/"
