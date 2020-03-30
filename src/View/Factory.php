@@ -114,6 +114,8 @@ class Factory implements FactoryContract
     {
         [$themeDir, $filePath] = $this->file($view);
 
+        $data = array_merge($data, $this->shares, $this->parseData($mergeData));
+
         $view = new View($filePath, $view, $data);
 
         $view->setThemeDir($themeDir);
