@@ -194,6 +194,19 @@ if (! function_exists('base_path')) {
     }
 }
 
+if (! function_exists('src_path')) {
+    /**
+     * Get the path to the base of the install.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function base_path($path = '')
+    {
+        return app()->srcPath($path);
+    }
+}
+
 if (! function_exists('bcrypt')) {
     /**
      * Hash the given value against the bcrypt algorithm.
