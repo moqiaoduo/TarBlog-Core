@@ -177,20 +177,6 @@ class Redirector
     }
 
     /**
-     * Create a new redirect response to a controller action.
-     *
-     * @param  string|array  $action
-     * @param  mixed  $parameters
-     * @param  int  $status
-     * @param  array  $headers
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function action($action, $parameters = [], $status = 302, $headers = [])
-    {
-        return $this->to($this->generator->action($action, $parameters), $status, $headers);
-    }
-
-    /**
      * Create a new redirect response.
      *
      * @param  string  $path

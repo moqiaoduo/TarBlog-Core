@@ -721,4 +721,10 @@ class UrlGenerator implements UrlGeneratorContract
 
         return $this;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function action($action, $parameters = [], $absolute = true)
+    {}
 }
