@@ -3,12 +3,9 @@
 namespace TarBlog\Foundation\Bootstrap;
 
 use ErrorException;
-use Exception;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Debug\Exception\FatalErrorException;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Throwable;
 
 class HandleExceptions
 {
@@ -47,7 +44,7 @@ class HandleExceptions
         register_shutdown_function([$this, 'handleShutdown']);
 
         if (! $app->environment('testing')) {
-            ini_set('display_errors', 'Off');
+            ini_set('display_errors', 'On');
         }
     }
 
@@ -77,22 +74,17 @@ class HandleExceptions
      * the HTTP and Console kernels. But, fatal error exceptions must
      * be handled differently since they are not normal exceptions.
      *
-     * @param  \Throwable  $e
+     * @param  Throwable  $e
      * @return void
      */
     public function handleException($e)
     {
-        if (! $e instanceof Exception) {
-            $e = new FatalThrowableError($e);
-        }
+        $this->handleThrowable($e);
+    }
 
-        try {
-            self::$reservedMemory = null;
-
-            $this->getExceptionHandler()->report($e);
-        } catch (Exception $e) {
-            //
-        }
+    public function handleThrowable($e)
+    {
+        self::$reservedMemory = null;
 
         if ($this->app->runningInConsole()) {
             $this->renderForConsole($e);
@@ -105,10 +97,10 @@ class HandleExceptions
     /**
      * Render an exception to the console.
      *
-     * @param  \Exception  $e
+     * @param  Throwable  $e
      * @return void
      */
-    protected function renderForConsole(Exception $e)
+    protected function renderForConsole(Throwable $e)
     {
         $this->getExceptionHandler()->renderForConsole(new ConsoleOutput, $e);
     }
@@ -116,10 +108,10 @@ class HandleExceptions
     /**
      * Render an exception as an HTTP response and send it.
      *
-     * @param  \Exception  $e
+     * @param Throwable $e
      * @return void
      */
-    protected function renderHttpResponse(Exception $e)
+    protected function renderHttpResponse(Throwable $e)
     {
         $this->getExceptionHandler()->render($this->app['request'], $e)->send();
     }
@@ -132,22 +124,8 @@ class HandleExceptions
     public function handleShutdown()
     {
         if (! is_null($error = error_get_last()) && $this->isFatal($error['type'])) {
-            $this->handleException($this->fatalExceptionFromError($error, 0));
+            $this->handleThrowable($error);
         }
-    }
-
-    /**
-     * Create a new fatal exception instance from an error array.
-     *
-     * @param  array  $error
-     * @param  int|null  $traceOffset
-     * @return \Symfony\Component\Debug\Exception\FatalErrorException
-     */
-    protected function fatalExceptionFromError(array $error, $traceOffset = null)
-    {
-        return new FatalErrorException(
-            $error['message'], $error['type'], 0, $error['file'], $error['line'], $traceOffset
-        );
     }
 
     /**
@@ -164,10 +142,11 @@ class HandleExceptions
     /**
      * Get an instance of the exception handler.
      *
-     * @return \Illuminate\Contracts\Debug\ExceptionHandler
+     * @return \TarBlog\Foundation\Throwable\Handler
+     * @throws
      */
     protected function getExceptionHandler()
     {
-        return $this->app->make(ExceptionHandler::class);
+        return $this->app->make('ThrowableHandler');
     }
 }

@@ -2,13 +2,10 @@
 
 namespace TarBlog\Foundation\Http;
 
-use Exception;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Illuminate\Support\Facades\Facade;
 use InvalidArgumentException;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use TarBlog\Routing\Router;
 use TarBlog\Routing\Pipeline;
 use TarBlog\Foundation\Http\Events\RequestHandled;
@@ -105,13 +102,7 @@ class Kernel implements KernelContract
             $request->enableHttpMethodParameterOverride();
 
             $response = $this->sendRequestThroughRouter($request);
-        } catch (Exception $e) {
-            $this->reportException($e);
-
-            $response = $this->renderException($request, $e);
         } catch (Throwable $e) {
-            $this->reportException($e = new FatalThrowableError($e));
-
             $response = $this->renderException($request, $e);
         }
 
@@ -395,26 +386,15 @@ class Kernel implements KernelContract
     }
 
     /**
-     * Report the exception to the exception handler.
-     *
-     * @param  \Exception  $e
-     * @return void
-     */
-    protected function reportException(Exception $e)
-    {
-        $this->app[ExceptionHandler::class]->report($e);
-    }
-
-    /**
      * Render the exception to a response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
+     * @param \Illuminate\Http\Request $request
+     * @param Throwable $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function renderException($request, Exception $e)
+    protected function renderException($request, Throwable $e)
     {
-        return $this->app[ExceptionHandler::class]->render($request, $e);
+        return $this->app['ThrowableHandler']->render($request, $e);
     }
 
     /**

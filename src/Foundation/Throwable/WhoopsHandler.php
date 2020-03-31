@@ -1,6 +1,6 @@
 <?php
 
-namespace TarBlog\Foundation\Exceptions;
+namespace TarBlog\Foundation\Throwable;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
