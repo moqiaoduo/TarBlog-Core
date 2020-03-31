@@ -89,6 +89,8 @@ class Handler
      */
     public function render($request, Throwable $e)
     {
+        ob_clean(); // 防止内容污染
+
         if (method_exists($e, 'render') && $response = $e->render($request)) {
             return Router::toResponse($request, $response);
         } elseif ($e instanceof Responsable) {
