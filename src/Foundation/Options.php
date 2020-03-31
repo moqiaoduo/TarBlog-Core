@@ -55,6 +55,24 @@ class Options
             return $this->data[$name];
     }
 
+    /**
+     * 通过前缀获取配置
+     * 仅支持user=0的项目
+     *
+     * @param $prefix
+     * @return array
+     */
+    public function getByPrefix($prefix)
+    {
+        $data = [];
+        foreach ($this->data as $key => $val) {
+            if (strpos($key, $prefix) !== false) {
+                $data[$key] = $val;
+            }
+        }
+        return $data;
+    }
+
     public function user($key, $user, $default = null)
     {
         if ($user <= 0)
