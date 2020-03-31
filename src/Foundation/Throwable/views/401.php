@@ -1,6 +1,6 @@
 <?php
 $this->title = 'Unauthorized';
 $this->code = 401;
-$this->message = 'Unauthorized';
+$this->message = '未认证';
 
 $this->need('error');

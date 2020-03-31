@@ -1,6 +1,6 @@
 <?php
 $this->title = 'Not Found';
 $this->code = 404;
-$this->message = 'Not Found';
+$this->message = '页面未找到';
 
 $this->need('error');
