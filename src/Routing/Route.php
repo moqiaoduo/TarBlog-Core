@@ -134,11 +134,16 @@ class Route
     /**
      * 获取匹配到的参数
      *
-     * @return array
+     * @param $param
+     * @param $default
+     * @return object|string
      */
-    public function getParameters(): array
+    public function parameter($param, $default)
     {
-        return $this->parameters;
+        if (array_key_exists($param, $this->parameters))
+            return $this->parameters[$param];
+
+        return $default;
     }
 
     /**
