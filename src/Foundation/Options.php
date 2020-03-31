@@ -112,7 +112,7 @@ class Options
 
     public function siteUrl($ext = '')
     {
-        echo $this->data['siteName'] . (substr($ext,0,1) == '/' ? $ext : '/' . $ext);
+        echo $this->data['siteUrl'] . (substr($ext,0,1) == '/' ? $ext : '/' . $ext);
     }
 
     /**
