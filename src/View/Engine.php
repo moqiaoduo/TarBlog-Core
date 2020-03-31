@@ -267,7 +267,7 @@ EOF;
      * @param boolean $return 是否返回
      * @return string|void
      */
-    public function remember($cookieName, $return = false)
+    public static function remember($cookieName, $return = false)
     {
         $cookieName = strtolower($cookieName);
 
