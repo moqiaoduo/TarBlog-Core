@@ -538,16 +538,29 @@ if (! function_exists('resolve')) {
     }
 }
 
-if (! function_exists('theme_spath')) {
+if (! function_exists('resources_path')) {
     /**
      * Get the path to the themes folder.
      *
      * @param  string  $path
      * @return string
      */
-    function themes_path($path = '')
+    function resource_path($path = '')
     {
         return app()->resourcePath($path);
+    }
+}
+
+if (! function_exists('theme_path')) {
+    /**
+     * Get the path to the themes folder.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function theme_path($path = '')
+    {
+        return app()->themePath($path);
     }
 }
 
@@ -766,5 +779,59 @@ if (! function_exists('setOption')) {
     function setOption($key, $value, $user = 0)
     {
         app('options')->writeToDB($key, $value, $user);
+    }
+}
+
+if (! function_exists('trans')) {
+    /**
+     * Translate the given message.
+     *
+     * @param  string|null  $key
+     * @param  array  $replace
+     * @param  string|null  $locale
+     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
+     */
+    function trans($key = null, $replace = [], $locale = null)
+    {
+        if (is_null($key)) {
+            return app('translator');
+        }
+
+        return app('translator')->get($key, $replace, $locale);
+    }
+}
+
+if (! function_exists('trans_choice')) {
+    /**
+     * Translates the given message based on a count.
+     *
+     * @param  string  $key
+     * @param  \Countable|int|array  $number
+     * @param  array  $replace
+     * @param  string|null  $locale
+     * @return string
+     */
+    function trans_choice($key, $number, array $replace = [], $locale = null)
+    {
+        return app('translator')->choice($key, $number, $replace, $locale);
+    }
+}
+
+if (! function_exists('__')) {
+    /**
+     * Translate the given message.
+     *
+     * @param  string|null  $key
+     * @param  array  $replace
+     * @param  string|null  $locale
+     * @return string|array|null
+     */
+    function __($key = null, $replace = [], $locale = null)
+    {
+        if (is_null($key)) {
+            return $key;
+        }
+
+        return trans($key, $replace, $locale);
     }
 }

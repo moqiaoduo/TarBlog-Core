@@ -22,7 +22,7 @@ class Application extends Container implements ApplicationContract
      *
      * @var string
      */
-    const VERSION = '1.0.0';
+    const VERSION = '0.1.0';
 
     /**
      * Indicates if the application has "booted".
@@ -218,6 +218,7 @@ class Application extends Container implements ApplicationContract
         $this->instance('path', $this->path());
         $this->instance('path.base', $this->basePath());
         $this->instance('path.src', $this->srcPath());
+        $this->instance('path.lang', $this->langPath());
         $this->instance('path.config', $this->configPath());
         $this->instance('path.storage', $this->storagePath());
         $this->instance('path.database', $this->databasePath());
@@ -303,6 +304,16 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Get the path to the language files.
+     *
+     * @return string
+     */
+    public function langPath()
+    {
+        return $this->resourcePath().DIRECTORY_SEPARATOR.'lang';
+    }
+
+    /**
      * @inheritDoc
      */
     public function databasePath($path = '')
@@ -347,14 +358,25 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * 指向的是主题目录
+     * 指向的是src的资源目录
      *
      * @param  string  $path
      * @return string
      */
     public function resourcePath($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'usr'.DIRECTORY_SEPARATOR.'theme'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->srcPath.DIRECTORY_SEPARATOR.'resources'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * 指向的是主题目录
+     *
+     * @param  string  $path
+     * @return string
+     */
+    public function themePath($path = '')
+    {
+        return $this->basePath('usr'.DIRECTORY_SEPARATOR.'theme') . ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**

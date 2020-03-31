@@ -40,6 +40,7 @@
 * illuminate/pagination 分页
 * illuminate/pipeline 管道
 * illuminate/session Session
+* illuminate/translation 翻译
 * illuminate/validation 表单验证
 
 ## 开源协议

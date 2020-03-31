@@ -17,6 +17,7 @@
         "illuminate/pagination": "^5.8",
         "illuminate/pipeline": "^5.8",
         "illuminate/session": "^5.8",
+        "illuminate/translation": "^5.8",
         "illuminate/validation": "^5.8"
     },
     "require-dev": {
