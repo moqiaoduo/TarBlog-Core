@@ -1,6 +1,6 @@
 <?php
-$this->title = 'Service Unavailable';
+$this->title = __('Service Unavailable');
 $this->code = 500;
-$this->message = $this->exception->getMessage() ?: '服务暂不可用';
+$this->message = __($this->exception->getMessage() ?: 'Service Unavailable');
 
 $this->need('error');

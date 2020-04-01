@@ -1,6 +1,6 @@
 <?php
-$this->title = 'Forbidden';
+$this->title = __('Forbidden');
 $this->code = 403;
-$this->message = $this->exception->getMessage() ?: '访问被拒绝';
+$this->message = __($this->exception->getMessage() ?: 'Forbidden');
 
 $this->need('error');
