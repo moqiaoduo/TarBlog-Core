@@ -76,7 +76,7 @@ class Factory implements FactoryContract
      */
     public function file($view, $path = null, $notThrow = false)
     {
-        $theme = $path ?: $this->shares['app']->resourcePath($this->theme);
+        $theme = $path ?: $this->shares['app']->themePath($this->theme);
 
         $viewToPath = str_replace(".","/",$view); // view的点表示路径分隔，虽然很少用到但还是支持一下吧
 
