@@ -243,8 +243,15 @@ if (! function_exists('config_path')) {
     }
 }
 
-if (! function_exists('env')) {
-    function env($key = null, $default = null)
+if (! function_exists('config_base')) {
+    /**
+     * 读取config.php的内容
+     *
+     * @param null $key
+     * @param null $default
+     * @return \Illuminate\Config\Repository|mixed
+     */
+    function config_base($key = null, $default = null)
     {
         return config('base.'.$key, $default);
     }
