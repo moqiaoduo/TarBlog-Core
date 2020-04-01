@@ -452,15 +452,12 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * 读取bootstrap/services.php的配置
+     * 注册已配置的ServiceProviders
      */
     public function registerConfiguredProviders()
     {
-        if (file_exists($services_file = $this->getCachedServicesPath())) {
-            $services = (array) require $services_file;
-            foreach ($services as $service) {
-                $this->register($service);
-            }
+        foreach ((array) $this['config']->get('app.providers',[]) as $service) {
+            $this->register($service);
         }
     }
 
