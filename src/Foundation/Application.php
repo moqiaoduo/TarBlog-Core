@@ -365,7 +365,7 @@ class Application extends Container implements ApplicationContract
      */
     public function resourcePath($path = '')
     {
-        return $this->srcPath('resources'.($path ? DIRECTORY_SEPARATOR.$path : $path));
+        return $this->srcPath('resource'.($path ? DIRECTORY_SEPARATOR.$path : $path));
     }
 
     /**
