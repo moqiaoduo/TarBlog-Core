@@ -1,6 +1,6 @@
 <?php
-$this->title = __('Too Many Requests');
+$this->title = _t('Too Many Requests');
 $this->code = 429;
-$this->message = __('Too Many Requests');
+$this->message = _t('Too Many Requests');
 
 $this->need('error');

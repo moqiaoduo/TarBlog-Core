@@ -831,7 +831,7 @@ if (! function_exists('trans_choice')) {
     }
 }
 
-if (! function_exists('__')) {
+if (! function_exists('_t')) {
     /**
      * Translate the given message.
      *
@@ -840,7 +840,7 @@ if (! function_exists('__')) {
      * @param  string|null  $locale
      * @return string|array|null
      */
-    function __($key = null, $replace = [], $locale = null)
+    function _t($key = null, $replace = [], $locale = null)
     {
         if (is_null($key)) {
             return $key;
@@ -850,7 +850,7 @@ if (! function_exists('__')) {
     }
 }
 
-if (! function_exists('_t')) {
+if (! function_exists('_e')) {
     /**
      * 显示翻译
      *
@@ -858,7 +858,7 @@ if (! function_exists('_t')) {
      * @param  array  $replace
      * @param  string|null  $locale
      */
-    function _t($key, $replace = [], $locale = null)
+    function _e($key, $replace = [], $locale = null)
     {
         echo trans($key, $replace, $locale);
     }

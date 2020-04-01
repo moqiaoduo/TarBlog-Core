@@ -1,6 +1,6 @@
 <?php
-$this->title = __('Not Found');
+$this->title = _t('Not Found');
 $this->code = 404;
-$this->message = __('Not Found');
+$this->message = _t('Not Found');
 
 $this->need('error');

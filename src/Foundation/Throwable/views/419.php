@@ -1,6 +1,6 @@
 <?php
-$this->title = __('Page Expired');
+$this->title = _t('Page Expired');
 $this->code = 419;
-$this->message = __('Page Expired');
+$this->message = _t('Page Expired');
 
 $this->need('error');

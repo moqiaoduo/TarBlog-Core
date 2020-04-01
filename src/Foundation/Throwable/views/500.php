@@ -1,6 +1,6 @@
 <?php
-$this->title = __('Server Error');
+$this->title = _t('Server Error');
 $this->code = 500;
-$this->message = __('Server Error');
+$this->message = _t('Server Error');
 
 $this->need('error');
