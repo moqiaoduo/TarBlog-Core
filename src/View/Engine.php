@@ -85,7 +85,7 @@ class Engine
 
         $content = ob_get_clean();
 
-        return $content ?: null;
+        return $content ?: '';
     }
 
     /**
