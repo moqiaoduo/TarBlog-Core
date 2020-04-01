@@ -243,6 +243,13 @@ if (! function_exists('config_path')) {
     }
 }
 
+if (! function_exists('env')) {
+    function env($key = null, $default = null)
+    {
+        return config('base.'.$key, $default);
+    }
+}
+
 if (! function_exists('cookie')) {
     /**
      * Create a new cookie instance.
