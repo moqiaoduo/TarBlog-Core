@@ -37,8 +37,6 @@ class LoadConfiguration
         if (! isset($loadedFromCache)) {
             if (file_exists($config_file = $app->environmentFilePath())) {
                 $c = (array) require $config_file;
-                $config->set('app',(array) $c['app']);
-                unset($c['app']);
                 $config->set('base',$c);
             }
 
@@ -49,12 +47,13 @@ class LoadConfiguration
         // values that were loaded. We will pass a callback which will be used to get
         // the environment in a web context where an "--env" switch is not present.
         $app->detectEnvironment(function () use ($config) {
-            return $config->get('app.dev', false)?'dev':'production';
+            return $config->get('app.env', 'production');
         });
 
         // 需要用到数据库的设置，都会放在后面
-        // 原本有个时区设置在这里，但因为需要读取数据库，故放到后面
-        // Laravel是要写日志的，我们不需要，所以时区设置不急
+
+        // 写入默认时区，后面读取数据库以后还会再写一次
+        date_default_timezone_set($config->get('app.timezone', 'UTC'));
 
         mb_internal_encoding('UTF-8');
     }
