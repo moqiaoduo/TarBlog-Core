@@ -849,3 +849,17 @@ if (! function_exists('__')) {
         return trans($key, $replace, $locale);
     }
 }
+
+if (! function_exists('_t')) {
+    /**
+     * 显示翻译
+     *
+     * @param  string|null  $key
+     * @param  array  $replace
+     * @param  string|null  $locale
+     */
+    function _t($key, $replace = [], $locale = null)
+    {
+        echo trans($key, $replace, $locale);
+    }
+}
